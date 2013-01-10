@@ -66,6 +66,47 @@
 
 	</dependencies>
 
+	<build>
+
+		<plugins>
+
+			<!-- local codes -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<!-- local mains -->
+					<execution>
+						<id>add-main-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${basedir}/src-main</source>
+							</sources>
+						</configuration>
+					</execution>
+					<!-- local tests -->
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-test-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${basedir}/src-test</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+	</build>
+
 	<profiles>
 
 		<!-- get updated caliper and apply patches -->
