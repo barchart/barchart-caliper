@@ -84,7 +84,6 @@
 						</configuration>
 						<executions>
 							<execution>
-								<id>checkout-from-remote</id>
 								<phase>generate-sources</phase>
 								<goals>
 									<goal>checkout</goal>
@@ -93,13 +92,30 @@
 						</executions>
 					</plugin>
 
+					<!-- <plugin> -->
+					<!-- <groupId>org.apache.maven.plugins</groupId> -->
+					<!-- <artifactId>maven-patch-plugin</artifactId> -->
+					<!-- <executions> -->
+					<!-- <execution> -->
+					<!-- <phase>generate-sources</phase> -->
+					<!-- <goals> -->
+					<!-- <goal>apply</goal> -->
+					<!-- </goals> -->
+					<!-- <configuration> -->
+					<!-- <naturalOrderProcessing>true</naturalOrderProcessing> -->
+					<!-- <patchFile>${basedir}/patches/current.patch</patchFile> -->
+					<!-- <patchTrackingFile>${basedir}/target/patches-applied.txt</patchTrackingFile> -->
+					<!-- </configuration> -->
+					<!-- </execution> -->
+					<!-- </executions> -->
+					<!-- </plugin> -->
+
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-resources-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>copy-sources-after-checkout</id>
-								<phase>process-sources</phase>
+								<phase>generate-sources</phase>
 								<goals>
 									<goal>copy-resources</goal>
 								</goals>
@@ -119,19 +135,21 @@
 
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-patch-plugin</artifactId>
+						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>apply-local-patches</id>
-								<phase>process-sources</phase>
-								<goals>
-									<goal>apply</goal>
-								</goals>
+								<phase>generate-sources</phase>
 								<configuration>
-									<naturalOrderProcessing>true</naturalOrderProcessing>
-									<patchFile>${basedir}/src/main/patches/current.patch</patchFile>
-									<patchTrackingFile>${basedir}/target/patches/patches-applied.txt</patchTrackingFile>
+									<target>
+										<exec executable="git">
+											<arg value="apply" />
+											<arg value="${basedir}/patches/current.patch" />
+										</exec>
+									</target>
 								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
@@ -157,7 +175,6 @@
 						</configuration>
 						<executions>
 							<execution>
-								<id>checkout-from-remote</id>
 								<phase>generate-sources</phase>
 								<goals>
 									<goal>checkout</goal>
@@ -171,16 +188,13 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>produce-git-diff</id>
 								<phase>generate-sources</phase>
 								<configuration>
 									<target>
-										<exec executable="git"
-											output="${basedir}/src/main/patches/current.patch" error="target/result.patch.error">
+										<exec executable="git" output="${basedir}/patches/current.patch"
+											error="${basedir}/target/patches-error.txt">
 											<arg value="diff" />
-											<arg value="--no-index" />
-											<arg value="--no-prefix" />
-											<arg value="${gitDir}/src" />
+											<arg value="${gitDir}/caliper/src" />
 											<arg value="${basedir}/src" />
 										</exec>
 									</target>

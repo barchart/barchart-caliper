@@ -22,9 +22,7 @@
 
 		<exec executable="${executable}">
 
-			<arg value="clean" />
-			<arg value="compile" />
-			<arg value="test-compile" />
+			<arg value="generate-sources" />
 
 			<arg value="--activate-profiles" />
 			<arg value="checkout" />
