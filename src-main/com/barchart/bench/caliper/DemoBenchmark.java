@@ -55,6 +55,7 @@ public class DemoBenchmark extends Benchmark {
 
 	public static void main(final String[] args) {
 		CaliperMain.main(DemoBenchmark.class, new String[] { //
+			"--output", "./target/caliper-results/"//
 				//
 				});
 	}
