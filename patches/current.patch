@@ -1,0 +1,14 @@
+diff --git a/src/main/java/com/google/caliper/runner/CaliperRun.java b/src/main/java/com/google/caliper/runner/CaliperRun.java
+index a51af3d..1675922 100644
+--- a/src/main/java/com/google/caliper/runner/CaliperRun.java
++++ b/src/main/java/com/google/caliper/runner/CaliperRun.java
+@@ -197,6 +197,9 @@ public final class CaliperRun {
+     } catch (IOException e) {
+       throw new AssertionError(e); // ???
+     }
++    
++    console.print("Started : " + scenario);
++    console.flush();
+ 
+     List<String> eventLog = Lists.newArrayList();
+     Reader in = null;

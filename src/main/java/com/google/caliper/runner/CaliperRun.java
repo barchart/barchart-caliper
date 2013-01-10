@@ -197,6 +197,9 @@ public final class CaliperRun {
     } catch (IOException e) {
       throw new AssertionError(e); // ???
     }
+    
+    console.print("Started : " + scenario);
+    console.flush();
 
     List<String> eventLog = Lists.newArrayList();
     Reader in = null;
@@ -207,6 +210,8 @@ public final class CaliperRun {
       InterleavedReader reader = new InterleavedReader(in);
       Object o;
       while ((o = reader.read()) != null) {
+        console.print(o.toString());
+        console.flush();
         if (o instanceof String) {
           // TODO(schmoe): transform some of these messages, possibly with some configurability.
           // (especially for GC and JIT-compilation messages; also add timestamps)
@@ -224,6 +229,9 @@ public final class CaliperRun {
       process.destroy();
     }
 
+    console.print("Finished : " + scenario);
+    console.flush();
+    
     if (response == null) {
       // TODO(schmoe): This happens if the benchmark throws an exception. We should either make
       // this exception include the data sent to eventLog, or else make the calling code dump the
