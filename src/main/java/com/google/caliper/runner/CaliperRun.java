@@ -174,6 +174,9 @@ public final class CaliperRun {
         scenario.benchmarkMethod().name(),
         scenario.userParameters());
 
+    console.print(String.format("Request : %s\n", request));
+    console.flush();
+    
     ProcessBuilder processBuilder = new ProcessBuilder().redirectErrorStream(true);
 
     List<String> args = processBuilder.command();
@@ -198,7 +201,7 @@ public final class CaliperRun {
       throw new AssertionError(e); // ???
     }
     
-    console.print("Started : " + scenario);
+    console.print(String.format("Started : %s\n", scenario));
     console.flush();
 
     List<String> eventLog = Lists.newArrayList();
@@ -210,7 +213,7 @@ public final class CaliperRun {
       InterleavedReader reader = new InterleavedReader(in);
       Object o;
       while ((o = reader.read()) != null) {
-        console.print(o.toString());
+        console.print("子 " + o);
         console.flush();
         if (o instanceof String) {
           // TODO(schmoe): transform some of these messages, possibly with some configurability.
@@ -229,7 +232,7 @@ public final class CaliperRun {
       process.destroy();
     }
 
-    console.print("Finished : " + scenario);
+    console.print(String.format("Started : %s\n", scenario));
     console.flush();
     
     if (response == null) {

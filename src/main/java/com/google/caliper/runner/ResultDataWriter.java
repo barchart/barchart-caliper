@@ -118,6 +118,7 @@ public final class ResultDataWriter {
     modelScenario.vmLocalName = vmLocalName;
     modelScenario.environmentLocalName = ENVIRONMENT_LOCAL_NAME;
     modelScenario.userParameters = new TreeMap<String, String>(scenario.userParameters());
+    modelScenario.vmArguments = new TreeMap<String, String>(scenario.vm().arguments);
     run.scenarios.add(modelScenario);
     scenarioLocalNames.put(scenario, localName);
     return localName;

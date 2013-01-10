@@ -30,14 +30,16 @@ import java.util.Queue;
 public class MicrobenchmarkWorker implements Worker {
   @Override public Collection<Measurement> measure(Benchmark benchmark, String methodName,
       Map<String, String> optionMap, WorkerEventLog log) throws Exception {
+
     Options options = new Options(optionMap);
+    
     Trial trial = new Trial(benchmark, methodName, options, log);
 
     int targetReps = trial.warmUp();
 
     // TODO: make the minimum configurable, default to maybe 1000?
-    if (targetReps < 100) {
-      throw new Exception("Too few reps"); // TODO: better exception
+    if (targetReps < 10) {
+      throw new Exception("Too few reps="+targetReps); // TODO: better exception
     }
     return trial.run(targetReps);
   }

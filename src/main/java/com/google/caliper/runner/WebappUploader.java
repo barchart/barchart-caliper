@@ -39,9 +39,9 @@ final class WebappUploader implements ResultProcessor {
     this.proxy = checkNotNull(proxy);
 
     if (apiKeySpecified()) {
-      System.out.println(
-          "\nYou specified a Caliper API key, but web uploads are not yet available in new"
-          + " Caliper.\nIf you require use of the web application then please use old Caliper.\n");
+//      System.out.println(
+//          "\nYou specified a Caliper API key, but web uploads are not yet available in new"
+//          + " Caliper.\nIf you require use of the web application then please use old Caliper.\n");
     }
   }
 

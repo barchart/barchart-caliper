@@ -16,6 +16,7 @@
 
 package com.google.caliper.config;
 
+import com.barchart.bench.caliper.CaliperUtil;
 import com.google.caliper.util.Util;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
@@ -47,6 +48,7 @@ public final class CaliperConfigLoader {
       try {
         ImmutableMap<String, String> overrides =
             Util.loadProperties(Files.newInputStreamSupplier(rcFile));
+        CaliperUtil.log(mergeProperties(overrides, defaults));
         return new CaliperConfig(mergeProperties(overrides, defaults));
       } catch (IOException keepGoing) {
       }

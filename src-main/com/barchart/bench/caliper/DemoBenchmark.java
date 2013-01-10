@@ -5,6 +5,7 @@ import com.google.caliper.api.Benchmark;
 import com.google.caliper.api.SkipThisScenarioException;
 import com.google.caliper.api.VmOptions;
 import com.google.caliper.runner.CaliperMain;
+import com.google.caliper.util.CommandLineParser.Option;
 import com.google.caliper.util.ShortDuration;
 
 @VmOptions("-server")
@@ -27,11 +28,12 @@ public class DemoBenchmark extends Benchmark {
 	}
 
 	DemoBenchmark() {
-		// System.out.println("I should not do this.");
+		 System.out.println("I like doing this.");
 	}
 
 	@Override
 	protected void setUp() throws Exception {
+		System.out.println("Hey, I'm setting up the joint.");
 		if (string.equals("abc") && number == 1) {
 			throw new SkipThisScenarioException();
 		}
@@ -48,7 +50,7 @@ public class DemoBenchmark extends Benchmark {
 
 	@Override
 	protected void tearDown() throws Exception {
-		// System.out.println("Hey, I'm tearing up the joint.");
+		System.out.println("Hey, I'm tearing up the joint.");
 	}
 
 	public static void main(final String[] args) {
@@ -56,6 +58,5 @@ public class DemoBenchmark extends Benchmark {
 				//
 				});
 	}
-	
-}
 
+}
