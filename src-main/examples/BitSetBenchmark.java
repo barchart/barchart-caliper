@@ -16,8 +16,9 @@
 
 package examples;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.Benchmark;
+import com.google.caliper.runner.CaliperMain;
+
 import java.util.BitSet;
 import java.util.Random;
 
@@ -83,7 +84,7 @@ import java.util.Random;
  * <p><b>2:</b>Overly simplistic benchmarks can give a very false impression of
  * performance.
  */
-public class BitSetBenchmark extends SimpleBenchmark {
+public class BitSetBenchmark extends Benchmark {
   private BitSet bitSet;
   private char[] bitString;
 
@@ -181,6 +182,6 @@ public class BitSetBenchmark extends SimpleBenchmark {
 
   // TODO: remove this from all examples when IDE plugins are ready
   public static void main(String[] args) throws Exception {
-      Runner.main(BitSetBenchmark.class, args);
+      CaliperMain.main(BitSetBenchmark.class, args);
   }
 }

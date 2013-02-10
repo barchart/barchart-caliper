@@ -16,14 +16,14 @@
 
 package examples;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.Benchmark;
+import com.google.caliper.runner.CaliperMain;
 
 /**
  * Measures several candidate implementations for mod().
  */
 @SuppressWarnings("SameParameterValue")
-public class IntModBenchmark extends SimpleBenchmark {
+public class IntModBenchmark extends Benchmark {
   private static final int M = (1 << 16) - 1;
 
   public int timeConditional(int reps) {
@@ -89,6 +89,6 @@ public class IntModBenchmark extends SimpleBenchmark {
 
   // TODO: remove this from all examples when IDE plugins are ready
   public static void main(String[] args) throws Exception {
-    Runner.main(IntModBenchmark.class, args);
+    CaliperMain.main(IntModBenchmark.class, args);
   }
 }

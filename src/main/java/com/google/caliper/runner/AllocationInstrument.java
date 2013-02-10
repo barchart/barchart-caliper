@@ -18,13 +18,11 @@ package com.google.caliper.runner;
 
 import static com.google.common.base.Throwables.propagateIfInstanceOf;
 
-import com.google.caliper.api.Benchmark;
+import com.google.caliper.Benchmark;
 import com.google.caliper.api.SkipThisScenarioException;
 import com.google.caliper.worker.AllocationWorker;
 import com.google.caliper.worker.Worker;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -76,15 +74,18 @@ public final class AllocationInstrument extends Instrument {
    * This instrument's worker requires the allocationinstrumenter agent jar, specified
    * on the worker VM's command line with "-javaagent:[jarfile]".
    */
-  @Override Iterable<String> getExtraCommandLineArgs() {
+  @Override ImmutableSet<String> getExtraCommandLineArgs() {
     String agentJar = options.get("allocationAgentJar");
     // TODO(schmoe): what can we do to verify that agentJar is correct? Or to get a nicer
     // error message when it's not?
     if (agentJar == null || !new File(agentJar).exists()) {
       throw new IllegalStateException("Can't find required allocationinstrumenter agent jar");
     }
-    return Iterables.concat(super.getExtraCommandLineArgs(),
-        ImmutableList.of("-javaagent:" + agentJar));
+    // Add microbenchmark args to minimize differences in the output
+    return new ImmutableSet.Builder<String>()
+        .addAll(super.getExtraCommandLineArgs())
+        .add("-javaagent:" + agentJar)
+        .build();
   }
 
   @Override

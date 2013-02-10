@@ -16,14 +16,14 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 /**
  * Tests the performance of various StringBuilder methods.
  */
-public class StringBuilderBenchmark extends SimpleBenchmark {
+public class StringBuilderBenchmark extends Benchmark {
 
     @Param({"1", "10", "100"}) private int length;
 
@@ -127,6 +127,6 @@ public class StringBuilderBenchmark extends SimpleBenchmark {
 
     // TODO: remove this from all examples when IDE plugins are ready
     public static void main(String[] args) throws Exception {
-        Runner.main(StringBuilderBenchmark.class, args);
+        CaliperMain.main(StringBuilderBenchmark.class, args);
     }
 }

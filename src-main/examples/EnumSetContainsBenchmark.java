@@ -16,16 +16,17 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
+
 import java.util.EnumSet;
 import java.util.Set;
 
 /**
  * Measures EnumSet#contains().
  */
-public class EnumSetContainsBenchmark extends SimpleBenchmark {
+public class EnumSetContainsBenchmark extends Benchmark {
 
   @Param private SetMaker setMaker;
 
@@ -87,6 +88,6 @@ public class EnumSetContainsBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) throws Exception {
-    Runner.main(EnumSetContainsBenchmark.class, args);
+    CaliperMain.main(EnumSetContainsBenchmark.class, args);
   }
 }

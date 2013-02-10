@@ -22,15 +22,11 @@ import com.google.caliper.bridge.StartTimingLogMessage;
 import com.google.caliper.bridge.StopTimingLogMessage;
 import com.google.caliper.bridge.VmPropertiesLogMessage;
 import com.google.caliper.model.Measurement;
-import com.google.common.base.Predicate;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 
 import java.io.PrintWriter;
-import java.util.Map;
 
 public final class WorkerEventLog {
   private final PrintWriter writer;
@@ -52,18 +48,7 @@ public final class WorkerEventLog {
   }
 
   public void notifyWorkerStarted() {
-    Map<String, String> vmProperties =
-        Maps.filterKeys(Maps.fromProperties(System.getProperties()), new Predicate<String>() {
-          @Override
-          public boolean apply(String input) {
-            return input.startsWith("java.vm")
-                || input.startsWith("java.runtime")
-                || input.equals("java.version")
-                || input.equals("java.vendor");
-          }
-        });
-    writer.println(vmPropertiesRenderer.render(
-        new VmPropertiesLogMessage(ImmutableMap.copyOf(vmProperties))));
+    writer.println(vmPropertiesRenderer.render(new VmPropertiesLogMessage()));
   }
 
   public void notifyWarmupPhaseStarting() {
@@ -87,9 +72,14 @@ public final class WorkerEventLog {
   public void notifyMeasurementEnding(Iterable<Measurement> measurements) {
     writer.println(stopTimingRenderer.render(new StopTimingLogMessage(measurements)));
     for (Measurement measurement : measurements) {
-      writer.println(String.format("I got a result! %s: %f%s", measurement.description(),
-          measurement.value().magnitude() / measurement.weight(), measurement.value().unit()));
+      writer.printf("I got a result! %s: %f%s%n", measurement.description(),
+          measurement.value().magnitude() / measurement.weight(), measurement.value().unit());
     }
+  }
+
+  public void notifyMeasurementFailure(Exception e) {
+    writer.println("MEASUREMENT FAILURE!");
+    e.printStackTrace(writer);
   }
 
   public void notifyFailure(Exception e) {

@@ -16,14 +16,14 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 /**
  * Testing the old canard that looping backwards is faster.
  */
-public class LoopingBackwardsBenchmark extends SimpleBenchmark {
+public class LoopingBackwardsBenchmark extends Benchmark {
   @Param({"2", "20", "2000", "20000000"}) int max;
 
   public int timeForwards(int reps) {
@@ -47,6 +47,6 @@ public class LoopingBackwardsBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) throws Exception {
-    Runner.main(LoopingBackwardsBenchmark.class, args);
+    CaliperMain.main(LoopingBackwardsBenchmark.class, args);
   }
 }

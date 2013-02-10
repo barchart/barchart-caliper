@@ -18,7 +18,7 @@ package com.google.caliper.runner;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import com.google.caliper.api.Benchmark;
+import com.google.caliper.Benchmark;
 import com.google.caliper.bridge.AbstractLogMessageVisitor;
 import com.google.caliper.bridge.LogMessageVisitor;
 import com.google.caliper.bridge.StopTimingLogMessage;
@@ -41,10 +41,19 @@ import java.util.Arrays;
 
 public abstract class Instrument {
   protected ImmutableMap<String, String> options;
+  private String name = getClass().getSimpleName();
 
   @Inject void setOptions(@InstrumentOptions ImmutableMap<String, String> options) {
     this.options = ImmutableMap.copyOf(
         Maps.filterKeys(options, Predicates.in(instrumentOptions())));
+  }
+
+  @Inject void setInstrumentName(@InstrumentName String name) {
+    this.name = name;
+  }
+
+  String name() {
+    return name;
   }
 
   public ShortDuration estimateRuntimePerTrial() {
@@ -93,16 +102,31 @@ public abstract class Instrument {
   }
 
   /**
+   * Some default JVM args to keep worker VMs somewhat predictable.
+   */
+  static final ImmutableSet<String> JVM_ARGS = ImmutableSet.of(
+      // do compilation serially
+      "-Xbatch",
+      // make sure compilation doesn't run in parallel with itself
+      "-XX:CICompilerCount=1",
+      // ensure the parallel garbage collector
+      "-XX:+UseParallelGC",
+      // generate classes or don't, but do it immediately
+      "-Dsun.reflect.inflationThreshold=0");
+
+  /**
    * Returns some arguments that should be added to the command line when invoking
    * this instrument's worker.
    */
-  Iterable<String> getExtraCommandLineArgs() {
-    return ImmutableList.of();
+  ImmutableSet<String> getExtraCommandLineArgs() {
+    return JVM_ARGS;
   }
 
   /**
    * Several instruments look for benchmark methods like {@code timeBlah(int reps)}; this is the
    * centralized code that identifies such methods.
+   *
+   * <p>This method does not check the correctness of the argument types.
    */
   public static boolean isTimeMethod(Method method) {
     return method.getName().startsWith("time") && Util.isPublic(method);
@@ -116,7 +140,9 @@ public abstract class Instrument {
       BenchmarkClass benchmarkClass, Method timeMethod) throws InvalidBenchmarkException {
 
     checkArgument(isTimeMethod(timeMethod));
-    if (!Arrays.equals(timeMethod.getParameterTypes(), new Class<?>[] {int.class})) {
+    Class<?>[] parameterTypes = timeMethod.getParameterTypes();
+    if (!Arrays.equals(parameterTypes, new Class<?>[] {int.class})
+        && !Arrays.equals(parameterTypes, new Class<?>[] {long.class})) {
       throw new InvalidBenchmarkException(
           "Microbenchmark methods must accept a single int parameter: " + timeMethod.getName());
     }

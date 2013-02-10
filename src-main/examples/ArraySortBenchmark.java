@@ -16,9 +16,9 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -26,7 +26,7 @@ import java.util.Random;
 /**
  * Measures sorting on different distributions of integers.
  */
-public class ArraySortBenchmark extends SimpleBenchmark {
+public class ArraySortBenchmark extends Benchmark {
 
   @Param({"10", "100", "1000", "10000"}) private int length;
 
@@ -98,6 +98,6 @@ public class ArraySortBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) throws Exception {
-    Runner.main(ArraySortBenchmark.class, args);
+    CaliperMain.main(ArraySortBenchmark.class, args);
   }
 }

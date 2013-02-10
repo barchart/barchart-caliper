@@ -16,16 +16,17 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
+
 import java.util.AbstractList;
 import java.util.List;
 
 /**
  * Measures iterating through list elements.
  */
-public class ListIterationBenchmark extends SimpleBenchmark {
+public class ListIterationBenchmark extends Benchmark {
 
   @Param({"0", "10", "100", "1000"})
   private int length;
@@ -68,6 +69,6 @@ public class ListIterationBenchmark extends SimpleBenchmark {
 
   // TODO: remove this from all examples when IDE plugins are ready
   public static void main(String[] args) throws Exception {
-    Runner.main(ListIterationBenchmark.class, args);
+    CaliperMain.main(ListIterationBenchmark.class, args);
   }
 }

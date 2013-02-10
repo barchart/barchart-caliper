@@ -16,9 +16,9 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -44,7 +44,7 @@ import java.util.Random;
  *     memory (boolean arrays count as byte arrays!).
  * </ul>
  */
-public class CopyArrayBenchmark extends SimpleBenchmark {
+public class CopyArrayBenchmark extends Benchmark {
   public enum Strategy {
     CLONE {
       @Override Object[] copy(Object[] array) {
@@ -351,6 +351,6 @@ public class CopyArrayBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) {
-    Runner.main(CopyArrayBenchmark.class, args);
+    CaliperMain.main(CopyArrayBenchmark.class, args);
   }
 }

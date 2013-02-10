@@ -16,14 +16,14 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 /**
  * Measures the various ways the JDK converts doubles to strings.
  */
-public class DoubleToStringBenchmark extends SimpleBenchmark {
+public class DoubleToStringBenchmark extends Benchmark {
   @Param Method method;
 
   public enum Method {
@@ -99,6 +99,6 @@ public class DoubleToStringBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) throws Exception {
-    Runner.main(DoubleToStringBenchmark.class, args);
+    CaliperMain.main(DoubleToStringBenchmark.class, args);
   }
 }

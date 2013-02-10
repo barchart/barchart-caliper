@@ -16,7 +16,7 @@ package com.google.caliper.runner;
 
 import static com.google.common.collect.ObjectArrays.concat;
 
-import com.google.caliper.api.Benchmark;
+import com.google.caliper.Benchmark;
 import com.google.caliper.bridge.BridgeModule;
 import com.google.caliper.config.ConfigModule;
 import com.google.caliper.config.InvalidConfigurationException;
@@ -24,6 +24,7 @@ import com.google.caliper.json.GsonModule;
 import com.google.caliper.options.CaliperOptions;
 import com.google.caliper.options.OptionsModule;
 import com.google.caliper.util.InvalidCommandException;
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.inject.CreationException;
 import com.google.inject.Guice;
@@ -33,6 +34,8 @@ import com.google.inject.ProvisionException;
 import com.google.inject.spi.Message;
 
 import java.io.PrintWriter;
+
+import javax.annotation.Nullable;
 
 /**
  * Primary entry point for the caliper benchmark runner application; run with {@code --help} for
@@ -91,8 +94,14 @@ public final class CaliperMain {
     System.exit(code);
   }
 
+  private static final String LEGACY_ENV = "USE_LEGACY_CALIPER";
+
   public static void exitlessMain(String[] args, PrintWriter writer)
       throws InvalidCommandException, InvalidBenchmarkException, InvalidConfigurationException {
+    @Nullable String legacyCaliperEnv = System.getenv(LEGACY_ENV);
+    if (!Strings.isNullOrEmpty(legacyCaliperEnv)) {
+      System.err.println("Legacy Caliper is no more. " + LEGACY_ENV + " has no effect.");
+    }
     try {
       // TODO(gak): see if there's a better way to deal with options and writer. probably a module
       Injector optionsInjector = Guice.createInjector(new OptionsModule(args));

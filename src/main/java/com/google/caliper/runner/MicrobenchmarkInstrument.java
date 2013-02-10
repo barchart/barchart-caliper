@@ -24,7 +24,7 @@ import static com.google.common.base.Throwables.propagateIfInstanceOf;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static java.util.logging.Level.WARNING;
 
-import com.google.caliper.api.Benchmark;
+import com.google.caliper.Benchmark;
 import com.google.caliper.api.SkipThisScenarioException;
 import com.google.caliper.bridge.AbstractLogMessageVisitor;
 import com.google.caliper.bridge.GcLogMessage;
@@ -115,22 +115,6 @@ public final class MicrobenchmarkInstrument extends Instrument {
 
   @Override public String toString() {
     return "micro";
-  }
-
-  /**
-   * These are flags that are essential to the operation of the instrument and should not ever be
-   * disabled.
-   */
-  private static final ImmutableSet<String> MICROBENCHMARK_JVM_ARGS = ImmutableSet.of(
-      // do compilation serially
-      "-Xbatch",
-      // make sure compilation doesn't run in parallel with itself
-      "-XX:CICompilerCount=1",
-      // ensure the parallel garbage collector
-      "-XX:+UseParallelGC");
-
-  @Override ImmutableSet<String> getExtraCommandLineArgs() {
-    return MICROBENCHMARK_JVM_ARGS;
   }
 
   @Override MeasurementCollectingVisitor getMeasurementCollectingVisitor() {

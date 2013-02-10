@@ -16,9 +16,9 @@
 
 package examples;
 
+import com.google.caliper.Benchmark;
 import com.google.caliper.Param;
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.runner.CaliperMain;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Measures performance of list operations.
  */
-public class ListModificationBenchmark extends SimpleBenchmark {
+public class ListModificationBenchmark extends Benchmark {
 
   private enum Element {
     INSTANCE,
@@ -106,6 +106,6 @@ public class ListModificationBenchmark extends SimpleBenchmark {
 
   // TODO: remove this from all examples when IDE plugins are ready
   public static void main(String[] args) throws Exception {
-    Runner.main(ListModificationBenchmark.class, args);
+    CaliperMain.main(ListModificationBenchmark.class, args);
   }
 }

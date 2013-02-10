@@ -16,14 +16,15 @@
 
 package examples;
 
-import com.google.caliper.Runner;
-import com.google.caliper.SimpleBenchmark;
+import com.google.caliper.Benchmark;
+import com.google.caliper.runner.CaliperMain;
+
 import java.util.Formatter;
 
 /**
  * Compares Formatter against hand-written StringBuilder code.
  */
-public class FormatterBenchmark extends SimpleBenchmark {
+public class FormatterBenchmark extends Benchmark {
   public void timeFormatter_NoFormatting(int reps) {
     for (int i = 0; i < reps; i++) {
       Formatter f = new Formatter();
@@ -74,6 +75,6 @@ public class FormatterBenchmark extends SimpleBenchmark {
   }
 
   public static void main(String[] args) throws Exception {
-    Runner.main(FormatterBenchmark.class, args);
+    CaliperMain.main(FormatterBenchmark.class, args);
   }
 }
